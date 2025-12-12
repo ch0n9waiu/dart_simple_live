@@ -1,7 +1,7 @@
 name: Build TV APK (Debug Mode)
 
 on:
-  workflow_dispatch: # 允许手动点击触发
+  workflow_dispatch:
 
 jobs:
   build-android:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable' # 使用最新版，解决依赖报错
+          channel: 'stable' # 必须是 stable
 
       - name: Get Dependencies
         working-directory: ./simple_live_tv_app
@@ -27,13 +27,11 @@ jobs:
 
       - name: Build APK (Debug)
         working-directory: ./simple_live_tv_app
-        # 关键修改：使用 --debug 模式，避开签名密码验证
         run: flutter build apk --debug --no-tree-shake-icons
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: my-tv-app-debug
-          # 关键修改：文件名变成了 app-debug.apk
           path: simple_live_tv_app/build/app/outputs/flutter-apk/app-debug.apk
           retention-days: 1
