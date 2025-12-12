@@ -1,4 +1,4 @@
-name: Build TV APK (Simple)
+name: Build TV APK (Fixed)
 
 on:
   workflow_dispatch: # 允许手动点击触发
@@ -19,15 +19,15 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0' # 使用较新的稳定版
-          channel: 'stable'
+          channel: 'stable' # 强制使用最新稳定版
+          # 之前这里写了 3.24.0 导致报错，现在我们不写版本号，默认取最新（目前是 3.27+）
 
       - name: Get Dependencies
-        working-directory: ./simple_live_tv_app # 进入TV版目录
+        working-directory: ./simple_live_tv_app
         run: flutter pub get
 
       - name: Build APK (Release)
-        working-directory: ./simple_live_tv_app # 进入TV版目录
+        working-directory: ./simple_live_tv_app
         run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload APK
